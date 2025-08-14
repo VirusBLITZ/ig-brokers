@@ -10,7 +10,7 @@ Given the following warning, any financial losses incurred from using this will 
 Cargo.toml
 ```toml
 [dependencies]
-ig-brokers = { git = "https://github.com/satnav/ig-brokers.git" }
+ig-brokers = { git = "https://github.com/VirusBLITZ/ig-brokers.git" }
 ```
 
 .env
