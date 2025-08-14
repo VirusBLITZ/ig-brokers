@@ -1042,15 +1042,24 @@ pub struct PricesQuery {
 pub enum Resolution {
     Day,
     Hour,
+    #[serde(rename = "HOUR_2")]
     Hour2,
+    #[serde(rename = "HOUR_3")]
     Hour3,
+    #[serde(rename = "HOUR_4")]
     Hour4,
     Minute,
+    #[serde(rename = "MINUTE_10")]
     Minute10,
+    #[serde(rename = "MINUTE_15")]
     Minute15,
+    #[serde(rename = "MINUTE_2")]
     Minute2,
+    #[serde(rename = "MINUTE_3")]
     Minute3,
+    #[serde(rename = "MINUTE_30")]
     Minute30,
+    #[serde(rename = "MINUTE_5")]
     Minute5,
     Month,
     Second,
