@@ -5,7 +5,7 @@ use reqwest::header::HeaderMap;
 use reqwest::Error;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
-use std::cell::RefCell;
+use std::sync::RwLock;
 use std::time::{Duration, Instant};
 
 pub struct Client {
@@ -15,8 +15,8 @@ pub struct Client {
     password: String,
     client: reqwest::blocking::Client,
     config: Config,
-    // Use RefCell to allow interior mutability for token storage
-    auth_state: RefCell<Option<AuthState>>,
+    // Use RwLock to allow thread-safe access to token storage
+    auth_state: RwLock<Option<AuthState>>,
 }
 
 #[derive(Debug)]
@@ -69,7 +69,7 @@ impl Client {
             password,
             config,
             client: reqwest::blocking::Client::new(),
-            auth_state: RefCell::new(None),
+            auth_state: RwLock::new(None),
         }
     }
 
@@ -148,10 +148,23 @@ impl Client {
     /// Get a valid access token, reusing existing one if still valid,
     /// refreshing if possible, or logging in fresh if needed
     fn get_valid_access_token(&self) -> Result<String, Error> {
-        let mut auth_state = self.auth_state.borrow_mut();
         let now = Instant::now();
 
-        // Check if we have a valid access token
+        // First, try to read the current auth state (shared read lock)
+        {
+            let auth_state = self.auth_state.read().unwrap();
+            if let Some(ref state) = *auth_state {
+                if now < state.expires_at {
+                    // Token is still valid, reuse it
+                    return Ok(state.access_token.clone());
+                }
+            }
+        }
+
+        // Token is expired or doesn't exist, need to get write lock for updates
+        let mut auth_state = self.auth_state.write().unwrap();
+
+        // Check again in case another thread updated the token while we were waiting for write lock
         if let Some(ref state) = *auth_state {
             if now < state.expires_at {
                 // Token is still valid, reuse it
