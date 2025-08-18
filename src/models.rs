@@ -1037,7 +1037,7 @@ pub struct PricesQuery {
     pub page_number: Option<u32>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Resolution {
     Day,
