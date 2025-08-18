@@ -489,6 +489,7 @@ pub struct PositionData {
     pub contract_size: f64,
     pub controlled_risk: bool,
     pub created_date: String,
+    #[serde(rename = "createdDateUTC")]
     pub created_date_utc: String,
     pub currency: String,
     pub deal_id: String,
@@ -810,6 +811,7 @@ pub struct MarketData3 {
     pub scaling_factor: f64,
     pub streaming_prices_available: bool,
     pub update_time: String,
+    #[serde(rename = "updateTimeUTC")]
     pub update_time_utc: String,
 }
 
