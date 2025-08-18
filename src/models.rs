@@ -495,12 +495,12 @@ pub struct PositionData {
     pub deal_reference: String,
     pub direction: Direction,
     pub level: f64,
-    pub limit_level: f64,
-    pub limited_risk_premium: f64,
+    pub limit_level: Option<f64>,
+    pub limited_risk_premium: Option<f64>,
     pub size: f64,
-    pub stop_level: f64,
-    pub trailing_step: f64,
-    pub trailing_stop_distance: f64,
+    pub stop_level: Option<f64>,
+    pub trailing_step: Option<f64>,
+    pub trailing_stop_distance: Option<f64>,
 }
 
 #[derive(Debug, Default, Serialize)]
