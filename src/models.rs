@@ -536,7 +536,7 @@ pub enum TimeInForce {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DealRef {
-    pub deal_reference: String,
+    pub deal_reference: Option<String>,
 }
 
 #[derive(Debug, Default, Serialize)]
